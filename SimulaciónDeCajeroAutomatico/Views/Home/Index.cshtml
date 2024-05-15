@@ -1,25 +1,36 @@
-﻿@{
+﻿@model BilletesViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="container d-flex justify-content-center">
-    <form class="form-control shadow-sm w-75 mt-5 bg-light p-5">
+    <form asp-action="Index" method="post" class="form-control shadow-sm w-75 mt-5 bg-light p-5">
         <div class="row justify-content-center mb-4">
             <label class="text-center form-label fs-3 col-12">Retira tu dinero</label>
         </div>
         <div class="row justify-content-center mb-3">
-            <select class="form-select align-self-center">
-                <option value="0" selected>Selecciona un metodo de dispensacion</option>
-                <option value="1">Billetes de 1000 y 200</option>
-                <option value="2">Billetes de 500 y 1000</option>
-                <option value="3">Metodo Eficiente</option>
+            <select class="form-select align-self-center" asp-for="ItemsSelected">
+                <option value="@Model.Nothing" selected>Selecciona un metodo de dispensacion</option>
+                <option value="@Model.CienYQuinientos">Billetes de 100 y 500</option>
+                <option value="@Model.MilYDosCientos">Billetes de 1000 y 200</option>
+                <option value="@Model.ModoEficiente">Metodo Eficiente</option>
             </select>
         </div>
         <div class="row justify-content-center form-floating ">
-            <input type="number" id="numero" pattern="\d*" class="form-control" placeholder="" />
-           <label for="monto">Digita un monto</label>
+            <input asp-for="Monto"  type="number" id="numero" pattern="\d*" class=" form-control mb-3" placeholder="" />
+            <label asp-for="Monto" class="form-label">Digita un monto</label>
+            <span asp-validation-for="Monto" class="text-danger"></span>
+        </div>
+        <div class="row justify-content-center gap-3">
+            <button type="submit" class="col btn btn-primary">Retirar</button>
+            <a class="col btn btn-secondary">Ver Transacciones</a>
         </div>
     </form>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
  
