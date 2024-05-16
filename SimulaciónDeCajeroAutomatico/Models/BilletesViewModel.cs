@@ -15,8 +15,10 @@ namespace SimulaciónDeCajeroAutomatico.Models
         public Dictionary<int,int> Billetes { get; set; } = new();
 
 
+        public string? ModoTransaccion { get; set; }
+         
         [Required(ErrorMessage = "El Campo {0} es requerido")]
         public string? Monto { get; set; }
-   
+
     }
 }

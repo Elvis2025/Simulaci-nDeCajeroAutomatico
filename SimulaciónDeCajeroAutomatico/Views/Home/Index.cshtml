@@ -4,7 +4,7 @@
 }
 @if (!string.IsNullOrWhiteSpace(ViewBag.Message))
 {
-    <div id="alertMessage" class="alert @ViewBag.MessageType">
+    <div id="alertMessage" class="justify-content-center align-items-center w-50 mx-auto alert @ViewBag.MessageType">
         @ViewBag.Message
     </div>
 }
@@ -14,22 +14,14 @@
         <div class="row justify-content-center mb-4">
             <label class="text-center form-label fs-3 col-12">Retira tu dinero</label>
         </div>
-        <div class="row justify-content-center mb-3">
-            <select class="form-select align-self-center" asp-for="ItemsSelected">
-                <option value="@Model.Nothing" selected>Selecciona un metodo de dispensacion</option>
-                <option value="@Model.CienYQuinientos">Billetes de 100 y 500</option>
-                <option value="@Model.MilYDosCientos">Billetes de 1000 y 200</option>
-                <option value="@Model.ModoEficiente">Metodo Eficiente</option>
-            </select>
-        </div>
         <div class="row justify-content-center form-floating ">
-            <input asp-for="Monto" class=" form-control mb-3" placeholder="" />
+            <input asp-for="Monto" type="number" class=" form-control mb-3" placeholder="" />
             <label asp-for="Monto" class="form-label">Digita un monto</label>
             <span asp-validation-for="Monto" class="text-danger"></span>
         </div>
         <div class="row justify-content-center gap-3">
-            <button type="submit" class="col btn btn-primary">Retirar</button>
-            <a class="col btn btn-secondary" asp-action="Privacy">Ver Transacciones</a>
+            <button type="submit" class="col btn btn-success">Retirar</button>
+            <a class="col btn btn-outline-success" asp-action="Privacy">Configuración</a>
         </div>
     </form>
 </div>

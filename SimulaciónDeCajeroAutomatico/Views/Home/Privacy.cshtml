@@ -1,6 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model BilletesViewModel
+@{
+    ViewData["Title"] = "Configuración";
 
-<p>Use this page to detail your site's privacy policy.</p>
+    // Lógica para seleccionar la opción por defecto
+    var selectedValue = Model.ItemsSelected;
+    var modoEficienteValue = Model.ModoEficiente;
+    var cienYQuinientosValue = Model.CienYQuinientos;
+    var milYDosCientosValue = Model.MilYDosCientos;
+}
+
+<div class="container d-flex justify-content-center">
+    <form asp-action="Privacy" method="post" class="shadow-sm w-50 mt-5 form-control bg-light p-5">
+        <div class="row mb-3">
+            <select class="form-select align-self-center" asp-for="ItemsSelected">
+                <option value="@modoEficienteValue" selected="@Equals(selectedValue, modoEficienteValue)">Metodo Eficiente</option>
+                <option value="@cienYQuinientosValue" selected="@Equals(selectedValue, cienYQuinientosValue)">Billetes de 100 y 500</option>
+                <option value="@milYDosCientosValue" selected="@Equals(selectedValue, cienYQuinientosValue)">Billetes de 1000 y 200</option>
+            </select>
+        </div>
+        <div class="row">
+            <button class="btn btn-outline-success" type="submit">Retirar</button>
+        </div>
+    </form>
+</div>

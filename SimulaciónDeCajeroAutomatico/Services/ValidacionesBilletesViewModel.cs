@@ -21,6 +21,7 @@ namespace SimulaciónDeCajeroAutomatico.Services
                     {
                         message = "Solo se dispensan billetes de RD$ 200 y RD$ 1,000.";
                         messageType = "alert-danger";
+                        return (message, messageType, isAlert);
                         //return View(model);
                     }
                     message = "Prosesando transacción...";
@@ -32,6 +33,7 @@ namespace SimulaciónDeCajeroAutomatico.Services
                     {
                         message = "Solo se dispensan billetes de RD$ 100  y 500.";
                         messageType = "alert-danger";
+                        return (message, messageType, isAlert);
                     }
                     message = "Prosesando transacción...";
                     messageType = "alert-success";
@@ -42,6 +44,7 @@ namespace SimulaciónDeCajeroAutomatico.Services
                     {
                         message = "Solo se dispensan billetes inferior a 100";
                         messageType = "alert-danger";
+                        return (message, messageType, isAlert);
                     }
                     message = "Prosesando transacción...";
                     messageType = "alert-success";
@@ -51,7 +54,8 @@ namespace SimulaciónDeCajeroAutomatico.Services
                 default:
                     message = "Debes seleccionar un metodo de dispensación";
                     messageType = "alert-danger";
-                    break;
+                    return (message, messageType, isAlert);
+                    
             }
 
             return (message, messageType,isAlert);
@@ -88,5 +92,26 @@ namespace SimulaciónDeCajeroAutomatico.Services
             return resultado;
         }
 
+        public string tipoTransaccion(TiposDeBilletes itemSelected)
+        {
+            string tipoTransaccion;
+            switch (itemSelected)
+            {
+                case TiposDeBilletes.MilYDosCientos:
+
+                    tipoTransaccion = "RD$ 1,000 y RD$ 200.";
+                    break;
+                case TiposDeBilletes.CienYQuinientos:
+                    tipoTransaccion = "RD$ 100 y RD$ 500.";
+                    break;
+                default:
+                    tipoTransaccion = "Modo Eficiente.";
+                    break;
+
+            }
+
+            return tipoTransaccion;
+        }
     }
 }
+

@@ -10,35 +10,42 @@ namespace SimulaciónDeCajeroAutomatico.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private ValidacionesBilletesViewModel myVal;
-        private BilletesViewModel myBill;
+        private static BilletesViewModel? myBill;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             myVal = new ValidacionesBilletesViewModel();
-            myBill = new BilletesViewModel();
+           
         }
 
         public IActionResult Index()
         {
-            var model = new BilletesViewModel();
-            return View(model);
+            if(myBill is null)
+            {
+                var model = new BilletesViewModel();
+                model.ItemsSelected = TiposDeBilletes.ModoEficiente;
+                myBill = model;
+                return View(myBill);
+            }
+            myBill.Monto = "";
+            return View(myBill);
             /*return View();*/
         }
 
         [HttpPost]
         public IActionResult Index(BilletesViewModel model)
         {
-            myBill = model;
+            myBill.Monto = model.Monto;
             if (ModelState.IsValid)
             {
                 var isAlert = false;
-                (ViewBag.Message, ViewBag.MessageType, isAlert) = myVal.Validaciones(model);
+                (ViewBag.Message, ViewBag.MessageType, isAlert) = myVal.Validaciones(myBill);
+                myBill.ModoTransaccion = myVal.tipoTransaccion(myBill.ItemsSelected);
                 if (!isAlert)
                 {
                     return View(model);
                 }
-                myBill.Billetes = myVal.cantidadBilletes(Convert.ToInt32(model.Monto),model.ItemsSelected);
-                myBill.Monto = "5";
+                myBill.Billetes = myVal.cantidadBilletes(Convert.ToInt32(model.Monto), myBill.ItemsSelected);
             }
 
             return RedirectToAction("Retiro");
@@ -55,8 +62,25 @@ namespace SimulaciónDeCajeroAutomatico.Controllers
         }
         public IActionResult Privacy()
         {
-            return View();
+            if(myBill is null)
+            {
+                var model = new BilletesViewModel();
+                model.ItemsSelected = TiposDeBilletes.ModoEficiente;
+                return View(model);
+            }
+            return View(myBill);
         }
+        [HttpPost]
+         public IActionResult Privacy(BilletesViewModel model)
+        {
+            if(myBill is null)
+            {
+                return View(model);
+            }
+            myBill.ItemsSelected = model.ItemsSelected;
+            return RedirectToAction("Index");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

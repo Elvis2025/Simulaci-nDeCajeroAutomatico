@@ -1,6 +1,49 @@
 ﻿@model BilletesViewModel
 @{
     ViewData["Title"] = "Retiro";
+    int sumaTotal = 0;
 }
 
-<h1>Hola @Model.Monto</h1>
+<div class="container">
+
+    <h1 class=" text-center">Detalles de la transacción</h1>
+
+    <h5></h5>
+    <table class="table mt-5">
+        
+        <thead>
+            <tr>
+                <th>BILLETES</th>
+                <th>CANTIDAD</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Billetes)
+            {
+                int totalPorFila = item.Key * item.Value;
+                sumaTotal += totalPorFila;
+                <tr>
+                    <td>@item.Key</td>
+                    <td>@item.Value</td>
+                    <td>@totalPorFila</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2"><strong>Total Suma:</strong></td>
+                <td><strong>@sumaTotal</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row justify-content-md-between">
+        <div class=" col-md-auto">
+            <a class="btn btn-success" asp-action="Index">Nuevo Retiro</a>
+        </div>
+        <div class=" col-md-auto">
+            <h5 class="fs-6 fw-light">Modo de transaccion: @Model.ModoTransaccion</h5>
+        </div>
+
+
+    </div>
+    
+</div>
