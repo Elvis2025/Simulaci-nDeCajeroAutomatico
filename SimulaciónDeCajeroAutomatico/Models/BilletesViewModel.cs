@@ -12,10 +12,11 @@ namespace SimulaciónDeCajeroAutomatico.Models
         public int CienYQuinientos { get; set; } = (int)TiposDeBilletes.CienYQuinientos;
         public int ModoEficiente { get; set; } = (int)TiposDeBilletes.ModoEficiente;
         public TiposDeBilletes ItemsSelected { get; set; } = new();
+        public Dictionary<int,int> Billetes { get; set; } = new();
 
-        [MultiploDeCien]
-        [Display(Name = "Monto")]
-        public int? Monto { get; set; } = new();
+
+        [Required(ErrorMessage = "El Campo {0} es requerido")]
+        public string? Monto { get; set; }
    
     }
 }

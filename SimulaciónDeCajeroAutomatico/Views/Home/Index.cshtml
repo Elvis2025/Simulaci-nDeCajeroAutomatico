@@ -2,9 +2,15 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+{
+    <div id="alertMessage" class="alert @ViewBag.MessageType">
+        @ViewBag.Message
+    </div>
+}
 <div class="container d-flex justify-content-center">
-    <form asp-action="Index" method="post" class="form-control shadow-sm w-75 mt-5 bg-light p-5">
+    <form asp-action="Index" method="post" class="form-control shadow-sm w-50 mt-5 bg-light p-5">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row justify-content-center mb-4">
             <label class="text-center form-label fs-3 col-12">Retira tu dinero</label>
         </div>
@@ -17,20 +23,24 @@
             </select>
         </div>
         <div class="row justify-content-center form-floating ">
-            <input asp-for="Monto"  type="number" id="numero" pattern="\d*" class=" form-control mb-3" placeholder="" />
+            <input asp-for="Monto" class=" form-control mb-3" placeholder="" />
             <label asp-for="Monto" class="form-label">Digita un monto</label>
             <span asp-validation-for="Monto" class="text-danger"></span>
         </div>
         <div class="row justify-content-center gap-3">
             <button type="submit" class="col btn btn-primary">Retirar</button>
-            <a class="col btn btn-secondary">Ver Transacciones</a>
+            <a class="col btn btn-secondary" asp-action="Privacy">Ver Transacciones</a>
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
- 
+
+<script>
+    // Ocultar el mensaje después de 5 segundos (5000 milisegundos)
+    setTimeout(function () {
+        $('#alertMessage').fadeOut('slow');
+    }, 3500);
+</script>

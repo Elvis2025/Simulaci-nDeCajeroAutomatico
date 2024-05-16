@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimulaciónDeCajeroAutomatico.Models;
+using SimulaciónDeCajeroAutomatico.Services;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace SimulaciónDeCajeroAutomatico.Controllers
@@ -7,10 +9,13 @@ namespace SimulaciónDeCajeroAutomatico.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private ValidacionesBilletesViewModel myVal;
+        private BilletesViewModel myBill;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            myVal = new ValidacionesBilletesViewModel();
+            myBill = new BilletesViewModel();
         }
 
         public IActionResult Index()
@@ -21,27 +26,32 @@ namespace SimulaciónDeCajeroAutomatico.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(BilletesViewModel model, int monto)
+        public IActionResult Index(BilletesViewModel model)
         {
-            
-                var seleccion = model.ItemsSelected;
-
-              
-                switch (seleccion)
+            myBill = model;
+            if (ModelState.IsValid)
+            {
+                var isAlert = false;
+                (ViewBag.Message, ViewBag.MessageType, isAlert) = myVal.Validaciones(model);
+                if (!isAlert)
                 {
-                    case TiposDeBilletes.MilYDosCientos:
-                        break;
-                    case TiposDeBilletes.CienYQuinientos:
-                        break;
-                    case TiposDeBilletes.ModoEficiente:
-                        break;
-                    default:
-                        
-                        break;
+                    return View(model);
                 }
+                myBill.Billetes = myVal.cantidadBilletes(Convert.ToInt32(model.Monto),model.ItemsSelected);
+                myBill.Monto = "5";
+            }
 
-                // Puedes devolver la vista actualizada o redirigir a otra acción
-                return RedirectToAction("Index");
+            return RedirectToAction("Retiro");
+        }
+        public IActionResult Retiro()
+        {
+            if(myBill is null)
+            {
+                return View();
+
+            }
+
+            return View(myBill);
         }
         public IActionResult Privacy()
         {

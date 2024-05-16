@@ -2,7 +2,7 @@
 
 namespace SimulaciónDeCajeroAutomatico.Services
 {
-    public class MultiploDeCien: ValidationAttribute
+    public class MultiploDeCienAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
